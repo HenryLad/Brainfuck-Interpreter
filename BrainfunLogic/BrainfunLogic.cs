@@ -2,24 +2,31 @@
 
 public class BrainFunLogic
 {
-   public string[] input;
+   public string[]? inputFileContent;
+   public string? input;
 
    public bool ValidateInput(string path)
    {
+      char[] allowedChars = new char[] { '>', '<', '+', '-', '.', ',', '[', ']' };
 
       try
       {
-         input = File.ReadAllLines(path);
+         inputFileContent = File.ReadAllLines(path);
+         input = string.Join("", inputFileContent
+             .SelectMany(line => line.Where(c => allowedChars.Contains(c))));
       }
       catch
       {
          throw new Exception($"File Path : {path} is invalid. Please check your Filepath");
       }
 
-      if (input.Length == 0) { throw new Exception("The giving input in the File is not valid."); }
+      if (string.IsNullOrEmpty(input))
+      {
+         throw new Exception("The given input in the File is not valid.");
+      }
 
+      System.Console.WriteLine(input);
       return true;
-
    }
 
    public int[] HandleInput(string UserInput = "")
@@ -31,43 +38,42 @@ public class BrainFunLogic
       int[] IntOutput = [];
       char[] Output = [];
 
-      for (int i = 0; i < input.Length; i++)
+      for (int i = 0; i < input?.Length; i++)
       {
-         for (int y = 0; y < input[i].Length; y++)
+
+         switch (input[i])
          {
-            switch (input[i][y])
-            {
-               case '+':
-                  IntOutput[ptr]++;
-                  break;
-               case '-':
-                  IntOutput[ptr]--;
-                  break;
-               case '<':
-                  ptr--;
-                  break;
-               case '>':
-                  ptr++;
-                  break;
-               case '[':
-
-                  break;
-               case ']':
-
-                  break;
-               case ',':
-                  char inputChar = UserInput[UserInputIndex];
-                  UserInputIndex++;
-                  IntOutput[ptr] = (int)inputChar;
-                  break;
-               case '.':
-                  Output[ptr] = (char)IntOutput[ptr];
+            case '+':
+               IntOutput[ptr]++;
                break;
-               
-                  
-            }
+            case '-':
+               IntOutput[ptr]--;
+               break;
+            case '<':
+               ptr--;
+               break;
+            case '>':
+               ptr++;
+               break;
+            case '[':
+
+               break;
+            case ']':
+
+               break;
+            case ',':
+               char inputChar = UserInput[UserInputIndex];
+               UserInputIndex++;
+               IntOutput[ptr] = (int)inputChar;
+               break;
+            case '.':
+               Output[ptr] = (char)IntOutput[ptr];
+               break;
+
+
          }
       }
+
 
       return IntOutput;
 
@@ -80,24 +86,29 @@ public class BrainFunLogic
    /// <returns name="Index">Returns the index of where to continue in the loop</returns>
    public int HandleLoops(int ptr, int[] IntOutput)
    {
-      if(IntOutput[ptr] == 0)
+      do
       {
-         return FindNextClosingBracket(ptr);
-      }
-      return 0;
+         if (IntOutput[ptr] == 0)
+         {
+            return FindNextClosingBracket(ptr);
+         }
+
+      } while (true);
+
+
    }
 
    public int FindNextClosingBracket(int startIndex)
-{
-    for (int i = startIndex; i < input.Length; i++)
-    {
-        int index = input[i].IndexOf(']', startIndex);
-        if (index != -1)
-        {
-            return index;
-        }
-        startIndex = 0; 
-    }
-    return -1; 
-}
+   {
+      for (int i = startIndex; i < inputFileContent.Length; i++)
+      {
+         int index = inputFileContent[i].IndexOf(']', startIndex);
+         if (index != -1)
+         {
+            return index + 1;
+         }
+         startIndex = 0;
+      }
+      return -1;
+   }
 }
