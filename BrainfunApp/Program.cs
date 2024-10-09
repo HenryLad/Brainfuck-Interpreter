@@ -12,10 +12,12 @@ else
    if(args.Length == 2)
    {
       bfl.HandleInput(args[1]);
+      
+      
    }
    else{
       bfl.HandleInput();
    }
-
-
+   
 }
+
