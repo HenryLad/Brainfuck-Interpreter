@@ -63,6 +63,8 @@ public class BrainFunLogic
                case '.':
                   Output[ptr] = (char)IntOutput[ptr];
                break;
+               
+                  
             }
          }
       }
@@ -70,4 +72,32 @@ public class BrainFunLogic
       return IntOutput;
 
    }
+   /// <summary>
+   /// 
+   /// </summary>
+   /// <param name="ptr"></param>
+   /// <param name="IntOutput"></param>
+   /// <returns name="Index">Returns the index of where to continue in the loop</returns>
+   public int HandleLoops(int ptr, int[] IntOutput)
+   {
+      if(IntOutput[ptr] == 0)
+      {
+         return FindNextClosingBracket(ptr);
+      }
+      return 0;
+   }
+
+   public int FindNextClosingBracket(int startIndex)
+{
+    for (int i = startIndex; i < input.Length; i++)
+    {
+        int index = input[i].IndexOf(']', startIndex);
+        if (index != -1)
+        {
+            return index;
+        }
+        startIndex = 0; 
+    }
+    return -1; 
+}
 }
