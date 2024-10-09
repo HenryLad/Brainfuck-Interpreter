@@ -84,17 +84,20 @@ public class BrainFunLogic
    /// <param name="ptr"></param>
    /// <param name="IntOutput"></param>
    /// <returns name="Index">Returns the index of where to continue in the loop</returns>
-   public int HandleLoops(int ptr, int[] IntOutput)
+   public int HandleLoops(int ptr, int[] IntOutput, int i)
    {
-      int ClosingIndex = input.TrimStart().IndexOf(']');
+      int StartingIndex = i;
+      int ClosingIndex = input.Substring(i).IndexOf(']');
       do
       {
          if (IntOutput[ptr] == 0)
          {
-            return input.IndexOf(']');
+            return ClosingIndex + 1;
          }
 
-      } while (true);
+
+      } while(IntOutput[ptr] != 0);
+      
 
 
    }
