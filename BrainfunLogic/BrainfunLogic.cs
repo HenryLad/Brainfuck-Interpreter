@@ -34,13 +34,13 @@ public class BrainFunLogic
       int UserInputIndex = 0;
       int ptr = 0;
 
-      System.Console.WriteLine(UserInput);
+
       int[] IntOutput = [];
       char[] Output = [];
 
+
       for (int i = 0; i < input?.Length; i++)
       {
-
          switch (input[i])
          {
             case '+':
@@ -72,8 +72,8 @@ public class BrainFunLogic
 
 
          }
-      }
 
+      }
 
       return IntOutput;
 
@@ -86,11 +86,12 @@ public class BrainFunLogic
    /// <returns name="Index">Returns the index of where to continue in the loop</returns>
    public int HandleLoops(int ptr, int[] IntOutput)
    {
+      int ClosingIndex = input.TrimStart().IndexOf(']');
       do
       {
          if (IntOutput[ptr] == 0)
          {
-            return FindNextClosingBracket(ptr);
+            return input.IndexOf(']');
          }
 
       } while (true);
@@ -98,17 +99,5 @@ public class BrainFunLogic
 
    }
 
-   public int FindNextClosingBracket(int startIndex)
-   {
-      for (int i = startIndex; i < inputFileContent.Length; i++)
-      {
-         int index = inputFileContent[i].IndexOf(']', startIndex);
-         if (index != -1)
-         {
-            return index + 1;
-         }
-         startIndex = 0;
-      }
-      return -1;
-   }
+  
 }
